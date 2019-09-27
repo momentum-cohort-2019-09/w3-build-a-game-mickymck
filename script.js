@@ -37,8 +37,6 @@ class Game {
             y: Math.floor(this.size.height * .5) - (heroSize.height / 2)
         }
 
-        console.log(flagLocation)
-
         this.hero = new Hero(heroLocation, heroSize)
         this.addBody(this.hero)
 
@@ -53,12 +51,20 @@ class Game {
         this.bodies.push(body)
     }
 
-    // add tick, to give our players the ability to move
-
-    // add keyboardability for our Hero
-
     run() {
-        this.draw()
+        const tick = () => {
+            this.update()
+            this.draw()
+            requestAnimationFrame(tick)
+        }
+
+        tick()
+    }
+
+    update() {
+        for (let body of this.bodies) {
+            body.update(this)
+        }
     }
 
     draw() {
@@ -77,6 +83,10 @@ class Hero {
         this.size = size
     }
 
+    update() {
+
+    }
+
     draw(screen) {
         screen.fillStyle = "#EEE11A"
         screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
@@ -89,6 +99,10 @@ class Flag {
         this.size = size
     }
 
+    update() {
+
+    }
+
     draw(screen) {
         screen.fillStyle = "#8CD1EF"
         screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
@@ -99,6 +113,10 @@ class Monster {
     constructor(location, size) {
         this.location = location
         this.size = size
+    }
+
+    update() {
+        this.location.x += 1
     }
 
     draw(screen) {
