@@ -2,7 +2,7 @@ class Game {
     constructor(canvasId) {
         const canvas = document.getElementById(canvasId)
         this.screen = canvas.getContext("2d")
-        this.size = { x: canvas.width, y: canvas.height }
+        this.size = { width: canvas.width, height: canvas.height }
 
         this.bodies = []
 
@@ -12,9 +12,11 @@ class Game {
         }
 
         let playerLocation = {
-            x: Math.floor(this.size.width / 2),
-            y: this.size.height - 40
+            x: Math.floor(this.size.width * .5),
+            y: Math.floor(this.size.height - (playerSize.height * 2))
         }
+
+        console.log(playerLocation)
 
         this.player = new Player(playerLocation, playerSize)
         this.addBody(this.player)
@@ -45,10 +47,10 @@ class Player {
     }
 
     draw(screen) {
-        screen.fillStyle = "#F59315"
+        screen.fillStyle = "#000000"
         screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
     }
 }
 
-const game = new Game("capture-the-flag")
-game.run()
+const captureGame = new Game("capture-the-flag")
+captureGame.run()
