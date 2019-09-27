@@ -27,6 +27,16 @@ class Game {
             y: Math.floor(flagSize.height * 2)
         }
 
+        let monsterSize = {
+            width: 10,
+            height: 10
+        }
+
+        let monsterLocation = {
+            x: Math.floor(this.size.width * .5) - (heroSize.width / 2),
+            y: Math.floor(this.size.height * .5) - (heroSize.height / 2)
+        }
+
         console.log(flagLocation)
 
         this.hero = new Hero(heroLocation, heroSize)
@@ -34,6 +44,9 @@ class Game {
 
         this.flag = new Flag(flagLocation, flagSize)
         this.addBody(this.flag)
+
+        this.monster = new Monster(monsterLocation, monsterSize)
+        this.addBody(this.monster)
     }
 
     addBody(body) {
@@ -78,6 +91,18 @@ class Flag {
 
     draw(screen) {
         screen.fillStyle = "#8CD1EF"
+        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+    }
+}
+
+class Monster {
+    constructor(location, size) {
+        this.location = location
+        this.size = size
+    }
+
+    draw(screen) {
+        screen.fillStyle = "#146515"
         screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
     }
 }
