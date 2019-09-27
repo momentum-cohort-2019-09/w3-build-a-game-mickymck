@@ -3,7 +3,7 @@ class Game {
         const canvas = document.getElementById(canvasId)
         this.screen = canvas.getContext("2d")
         this.size = { width: canvas.width, height: canvas.height }
-        this.keyboard = new Keyboarder
+        this.keyboard = new Keyboarder()
 
         this.bodies = []
 
@@ -84,7 +84,18 @@ class Hero {
     }
 
     update() {
-
+        if (game.keyboard.isDown(Keyboarder.KEYS.LEFT)) {
+            this.location.x -= 2
+        }
+        if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT)) {
+            this.location.x += 2
+        }
+        if (game.keyboard.isDown(Keyboarder.KEYS.UP)) {
+            this.location.y -= 2
+        }
+        if (game.keyboard.isDown(Keyboarder.KEYS.DOWN)) {
+            this.location.y += 2
+        }
     }
 
     draw(screen) {
@@ -116,7 +127,8 @@ class Monster {
     }
 
     update() {
-        this.location.x += 1
+        this.location.x -= 1
+        this.location.y -= 1
     }
 
     draw(screen) {
@@ -153,5 +165,5 @@ class Keyboarder {
 
 Keyboarder.KEYS = { LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, S: 83 }
 
-const captureGame = new Game("capture-the-flag")
-captureGame.run()
+const game = new Game("capture-the-flag")
+game.run()
