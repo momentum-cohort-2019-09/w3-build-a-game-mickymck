@@ -3,6 +3,13 @@
     margin-top: 50px;
 }
 
+h1 {
+    font-family: Apple chancery, sans-serif;
+    color: #8CD1EF;
+    text-align: center;
+    font-size:  48px;
+}
+
 /* #capture-the-flag {
     border: 5px solid black;
 } */

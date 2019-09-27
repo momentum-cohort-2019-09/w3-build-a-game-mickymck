@@ -13,8 +13,8 @@ class Game {
         }
 
         let heroLocation = {
-            x: Math.floor(this.size.width * .5) - (heroSize.width / 2),
-            y: Math.floor(this.size.height - (heroSize.height * 2))
+            x: Math.floor(heroSize.width * 2),
+            y: Math.floor(this.size.height * .5) - (heroSize.height / 2)
         }
 
         let flagSize = {
@@ -23,8 +23,8 @@ class Game {
         }
 
         let flagLocation = {
-            x: Math.floor(this.size.width * .5) - (flagSize.width / 2),
-            y: Math.floor(flagSize.height * 2)
+            x: Math.floor(this.size.width - (flagSize.width * 3)),
+            y: Math.floor(this.size.height * .5) - (flagSize.height / 2)
         }
 
         let monsterSize = {
@@ -63,7 +63,7 @@ class Game {
 
     draw() {
         this.screen.fillStyle = "#FFFDE8"
-        this.screen.fillRect(0, 0, 500, 500)
+        this.screen.fillRect(0, 0, 1000, 500)
 
         for (let body of this.bodies) {
             body.draw(this.screen)
