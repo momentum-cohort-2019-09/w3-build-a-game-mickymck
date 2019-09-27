@@ -8,8 +8,8 @@ class Game {
         this.bodies = []
 
         let heroSize = {
-            width: 10,
-            height: 10
+            width: 20,
+            height: 20
         }
 
         let heroLocation = {
@@ -18,8 +18,8 @@ class Game {
         }
 
         let flagSize = {
-            width: 10,
-            height: 10
+            width: 20,
+            height: 20
         }
 
         let flagLocation = {
@@ -28,8 +28,8 @@ class Game {
         }
 
         let monsterSize = {
-            width: 10,
-            height: 10
+            width: 20,
+            height: 20
         }
 
         let monsterLocation = {
@@ -62,7 +62,7 @@ class Game {
     }
 
     draw() {
-        this.screen.fillStyle = "#FFFDE8"
+        this.screen.fillStyle = "#EEF4DD"
         this.screen.fillRect(0, 0, 1000, 500)
 
         for (let body of this.bodies) {
@@ -78,7 +78,7 @@ class Hero {
     }
 
     draw(screen) {
-        screen.fillStyle = "#000000"
+        screen.fillStyle = "#EEE11A"
         screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
     }
 }
