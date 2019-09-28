@@ -51,6 +51,10 @@ class Game {
         this.bodies.push(body)
     }
 
+    removeHeroFlag() {
+        this.bodies.splice(0, 2)
+    }
+
     run() {
         const tick = () => {
             this.update()
@@ -62,9 +66,15 @@ class Game {
     }
 
     update() {
-        for (let body of this.bodies) {
-            body.update(this)
+        let notCollidingWithAnything = (b1) => {
+            return this.bodies.filter(function (b2) { return colliding(b1, b2) }).length === 0
         }
+
+        this.bodies = this.bodies.filter(notCollidingWithAnything)
+
+        for (var i = 0; i < this.bodies.length; i++) {
+            this.bodies[i].update();
+          }
     }
 
     draw() {
@@ -127,8 +137,7 @@ class Monster {
     }
 
     update() {
-        this.location.x -= 1
-        this.location.y -= 1
+        this.location.x -= .5
     }
 
     draw(screen) {
@@ -164,6 +173,16 @@ class Keyboarder {
 }
 
 Keyboarder.KEYS = { LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, S: 83 }
+
+function colliding(b1, b2) {
+    return !(
+        b1 === b2 ||
+        b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
+        b1.location.y + b1.size.height / 2 < b2.location.y - b2.size.height / 2 ||
+        b1.location.x - b1.size.width / 2 > b2.location.x + b2.size.width / 2 ||
+        b1.location.y - b1.size.height / 2 > b2.location.y + b2.size.height / 2
+    )
+}
 
 const game = new Game("capture-the-flag")
 game.run()
