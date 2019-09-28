@@ -40,12 +40,12 @@ class Game {
         }
 
         let heroWithFlagSize = {
-            width: 40,
-            height: 40
+            width: 20,
+            height: 20
         }
 
         let heroWithFlagLocation = {
-            x: Math.floor(this.size.width - (heroWithFlagSize.width * 1.75)),
+            x: Math.floor(this.size.width - (heroWithFlagSize.width * 3)),
             y: Math.floor(this.size.height * .5) - (heroWithFlagSize.height / 2)
         }
 
