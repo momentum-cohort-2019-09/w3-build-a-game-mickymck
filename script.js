@@ -27,6 +27,16 @@ class Game {
             y: Math.floor(this.size.height * .5) - (flagSize.height / 2)
         }
 
+        let heroWithFlagSize = {
+            width: 40,
+            height: 40
+        }
+
+        let heroWithFlagLocation = {
+            x: Math.floor(this.size.width - (heroWithFlagSize.width * 1.75)),
+            y: Math.floor(this.size.height * .5) - (heroWithFlagSize.height / 2)
+        }
+
         let monsterSize = {
             width: 20,
             height: 20
@@ -45,14 +55,12 @@ class Game {
 
         this.monster = new Monster(monsterLocation, monsterSize)
         this.addBody(this.monster)
+
+        this.heroWithFlag = new HeroWithFlag(heroWithFlagLocation, heroWithFlagSize)
     }
 
     addBody(body) {
         this.bodies.push(body)
-    }
-
-    removeHeroFlag() {
-        this.bodies.splice(0, 2)
     }
 
     run() {
@@ -66,15 +74,19 @@ class Game {
     }
 
     update() {
-        let notCollidingWithAnything = (b1) => {
-            return this.bodies.filter(function (b2) { return colliding(b1, b2) }).length === 0
+        let heroIsAlive = (b1) => {
+            return this.bodies.filter(function (b2) { return monstersWin(b1, b2) }).length === 0
         }
 
-        this.bodies = this.bodies.filter(notCollidingWithAnything)
+        this.bodies = this.bodies.filter(heroIsAlive)
 
         for (var i = 0; i < this.bodies.length; i++) {
             this.bodies[i].update();
           }
+
+        if ((this.bodies[0] !== this.hero) && (this.bodies[this.bodies.length-1] !== this.heroWithFlag)) {
+            this.addBody(this.heroWithFlag)
+        }
     }
 
     draw() {
@@ -130,6 +142,33 @@ class Flag {
     }
 }
 
+class HeroWithFlag {
+    constructor(location, size) {
+        this.location = location
+        this.size = size
+    }
+
+    update() {
+        if (game.keyboard.isDown(Keyboarder.KEYS.LEFT)) {
+            this.location.x -= 2
+        }
+        if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT)) {
+            this.location.x += 2
+        }
+        if (game.keyboard.isDown(Keyboarder.KEYS.UP)) {
+            this.location.y -= 2
+        }
+        if (game.keyboard.isDown(Keyboarder.KEYS.DOWN)) {
+            this.location.y += 2
+        }
+    }
+
+    draw(screen) {
+        screen.fillStyle = "#000000"
+        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+    }
+}
+
 class Monster {
     constructor(location, size) {
         this.location = location
@@ -174,7 +213,17 @@ class Keyboarder {
 
 Keyboarder.KEYS = { LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, S: 83 }
 
-function colliding(b1, b2) {
+function flagGrab(b1, b2) {
+    return !(
+        b1 === b2 ||
+        b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
+        b1.location.y + b1.size.height / 2 < b2.location.y - b2.size.height / 2 ||
+        b1.location.x - b1.size.width / 2 > b2.location.x + b2.size.width / 2 ||
+        b1.location.y - b1.size.height / 2 > b2.location.y + b2.size.height / 2
+    )
+}
+
+function monstersWin(b1, b2) {
     return !(
         b1 === b2 ||
         b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
