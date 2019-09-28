@@ -5,9 +5,11 @@ class Game {
         this.size = { width: canvas.width, height: canvas.height }
         this.keyboard = new Keyboarder()
 
-        this.bodies = []
+        this.monsters = []
 
-        this.goodBodies = []
+        this.players = []
+
+        this.goals = []
 
         let heroSize = {
             width: 20,
@@ -26,16 +28,6 @@ class Game {
 
         let flagLocation = {
             x: Math.floor(this.size.width - (flagSize.width * 3)),
-            y: Math.floor(this.size.height * .5) - (flagSize.height / 2)
-        }
-
-        let homeBaseSize = {
-            width: 20,
-            height: 20
-        }
-
-        let homeBaseLocation = {
-            x: Math.floor(flagSize.width * 3),
             y: Math.floor(this.size.height * .5) - (flagSize.height / 2)
         }
 
@@ -70,30 +62,31 @@ class Game {
         }
 
         this.hero = new Hero(heroLocation, heroSize)
-        this.addBody(this.hero)
-        this.addGoodBody(this.hero)
+        this.addPlayer(this.hero)
 
         this.flag = new Flag(flagLocation, flagSize)
-        this.addGoodBody(this.flag)
+        this.addGoal(this.flag)
 
         this.demon = new Demon(demonLocation, demonSize)
-        this.addBody(this.demon)
+        this.addMonster(this.demon)
 
         this.zombie = new Zombie(zombieLocation, zombieSize)
-        this.addBody(this.zombie)
+        this.addMonster(this.zombie)
 
         this.superHero = new SuperHero(superHeroLocation, superHeroSize)
-
-        this.homeBase = new HomeBase(homeBaseLocation, homeBaseSize)
     }
 
-    addBody(body) {
-        this.bodies.push(body)
+    addMonster(monster) {
+        this.monsters.push(monster)
     }
 
-    addGoodBody(goodBody) {
-        this.goodBodies.push(goodBody)
+    addPlayer(player) {
+        this.players.push(player)
     }
+
+    addGoal(goal) {
+        this.goals.push(goal)
+    }    
 
     run() {
         const tick = () => {
@@ -106,40 +99,23 @@ class Game {
     }
 
     update() {
-        let notEaten = (hero) => {
-            return this.bodies.filter(function (b2) { return monstersWin(hero, b2) }).length === 0
+
+        let notEaten = (player) => {
+            return this.players.filter(function (monster) { return monstersWin(player, monster) }).length === 0
         }
 
-        this.bodies = this.bodies.filter(notEaten)
+        this.players = this.players.filter(notEaten)
 
-        if ((this.bodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1]) !== this.superHero) {
-            this.goodBodies.splice(0, 1)
-            this.bodies.splice((this.bodies.length-1), 1)
-            this.goodBodies.splice(0,2)
+        for (var i = 0; i < this.players.length; i++) {
+            this.players[i].update();
         }
 
-        if ((this.goodBodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1] !== this.superHero)) {
-            this.addBody(this.superHero)
-            this.bodies.splice(0, 1)
+        for (var i = 0; i < this.goals.length; i++) {
+            this.goals[i].update();
         }
 
-        if ((this.bodies[this.bodies.length - 1] === this.superHero) && (this.goodBodies[1] !== this.homeBase)) {
-            this.addGoodBody(this.superHero)
-            this.addGoodBody(this.homeBase)
-        }
-        
-        let heroHasNoFlag = (hero) => {
-            return this.goodBodies.filter(function (flag) { return flagGrab(hero, flag) }).length === 0
-        }
-
-        this.goodBodies = this.goodBodies.filter(heroHasNoFlag)
-
-        for (var i = 0; i < this.goodBodies.length; i++) {
-            this.goodBodies[i].update();
-        }
-
-        for (var i = 0; i < this.bodies.length; i++) {
-            this.bodies[i].update();
+        for (var i = 0; i < this.monsters.length; i++) {
+            this.monsters[i].update();
         }
     }
 
@@ -147,12 +123,16 @@ class Game {
         this.screen.fillStyle = "#EEF4DD"
         this.screen.fillRect(0, 0, 1000, 500)
 
-        for (let body of this.bodies) {
-            body.draw(this.screen)
+        for (let player of this.players) {
+            player.draw(this.screen)
         }
 
-        for (let goodBody of this.goodBodies) {
-            goodBody.draw(this.screen)
+        for (let goal of this.goals) {
+            goal.draw(this.screen)
+        }
+
+        for (let monster of this.monsters) {
+            monster.draw(this.screen)
         }
     }
 }
@@ -165,16 +145,16 @@ class Hero {
 
     update() {
         if (game.keyboard.isDown(Keyboarder.KEYS.LEFT) && (this.location.x >= 5)) {
-            this.location.x -= 2
+            this.location.x -= 4
         }
         if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT) && (this.location.x <= 975)) {
-            this.location.x += 2
+            this.location.x += 4
         }
         if (game.keyboard.isDown(Keyboarder.KEYS.UP) && (this.location.y >= 5)) {
-            this.location.y -= 2
+            this.location.y -= 4
         }
         if (game.keyboard.isDown(Keyboarder.KEYS.DOWN) && (this.location.y <= 475)) {
-            this.location.y += 2
+            this.location.y += 4
         }
     }
 
@@ -200,22 +180,6 @@ class Flag {
     }
 }
 
-class HomeBase {
-    constructor(location, size) {
-        this.location = location
-        this.size = size
-    }
-
-    update() {
-
-    }
-
-    draw(screen) {
-        screen.fillStyle = "#FF9FF9"
-        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
-    }
-}
-
 class SuperHero {
     constructor(location, size) {
         this.location = location
@@ -225,16 +189,16 @@ class SuperHero {
 
     update() {
         if (game.keyboard.isDown(Keyboarder.KEYS.LEFT) && (this.location.x >= 5)) {
-            this.location.x -= 2
+            this.location.x -= 4
         }
         if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT) && (this.location.x <= 975)) {
-            this.location.x += 2
+            this.location.x += 4
         }
         if (game.keyboard.isDown(Keyboarder.KEYS.UP) && (this.location.y >= 5)) {
-            this.location.y -= 2
+            this.location.y -= 4
         }
         if (game.keyboard.isDown(Keyboarder.KEYS.DOWN) && (this.location.y <= 475)) {
-            this.location.y += 2
+            this.location.y += 4
         }
     }
 
@@ -310,23 +274,23 @@ class Keyboarder {
 
 Keyboarder.KEYS = { LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, S: 83 }
 
-function flagGrab(hero, flag) {
-    return !(
-        hero === flag ||
-        hero.location.x + hero.size.width / 2 < flag.location.x - flag.size.width / 2 ||
-        hero.location.y + hero.size.height / 2 < flag.location.y - flag.size.height / 2 ||
-        hero.location.x - hero.size.width / 2 > flag.location.x + flag.size.width / 2 ||
-        hero.location.y - hero.size.height / 2 > flag.location.y + flag.size.height / 2
-    )
-}
+// function flagGrab(hero, flag) {
+//     return !(
+//         hero === flag ||
+//         hero.location.x + hero.size.width / 2 < flag.location.x - flag.size.width / 2 ||
+//         hero.location.y + hero.size.height / 2 < flag.location.y - flag.size.height / 2 ||
+//         hero.location.x - hero.size.width / 2 > flag.location.x + flag.size.width / 2 ||
+//         hero.location.y - hero.size.height / 2 > flag.location.y + flag.size.height / 2
+//     )
+// }
 
-function monstersWin(hero, b2) {
+function monstersWin(player, monster) {
     return !(
-        hero === b2 ||
-        hero.location.x + hero.size.width / 2 < b2.location.x - b2.size.width / 2 ||
-        hero.location.y + hero.size.height / 2 < b2.location.y - b2.size.height / 2 ||
-        hero.location.x - hero.size.width / 2 > b2.location.x + b2.size.width / 2 ||
-        hero.location.y - hero.size.height / 2 > b2.location.y + b2.size.height / 2
+        player === monster ||
+        player.location.x + player.size.width / 2 < monster.location.x - monster.size.width / 2 ||
+        player.location.y + player.size.height / 2 < monster.location.y - monster.size.height / 2 ||
+        player.location.x - player.size.width / 2 > monster.location.x + monster.size.width / 2 ||
+        player.location.y - player.size.height / 2 > monster.location.y + monster.size.height / 2
     )
 }
 
