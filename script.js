@@ -7,6 +7,8 @@ class Game {
 
         this.bodies = []
 
+        this.goodBodies = []
+
         let heroSize = {
             width: 20,
             height: 20
@@ -49,9 +51,10 @@ class Game {
 
         this.hero = new Hero(heroLocation, heroSize)
         this.addBody(this.hero)
+        this.addGoodBody(this.hero)
 
         this.flag = new Flag(flagLocation, flagSize)
-        this.addBody(this.flag)
+        this.addGoodBody(this.flag)
 
         this.monster = new Monster(monsterLocation, monsterSize)
         this.addBody(this.monster)
@@ -61,6 +64,10 @@ class Game {
 
     addBody(body) {
         this.bodies.push(body)
+    }
+
+    addGoodBody(goodBody) {
+        this.goodBodies.push(goodBody)
     }
 
     run() {
@@ -75,16 +82,20 @@ class Game {
 
     update() {
         let heroHasNoFlag = (hero) => {
-            return this.bodies.filter(function (flag) { return flagGrab(hero, flag) }).length === 0
+            return this.goodBodies.filter(function (flag) { return flagGrab(hero, flag) }).length === 0
         }
 
-        this.bodies = this.bodies.filter(heroHasNoFlag)
+        this.goodBodies = this.goodBodies.filter(heroHasNoFlag)
+
+        for (var i = 0; i < this.goodBodies.length; i++) {
+            this.goodBodies[i].update();
+        }
 
         for (var i = 0; i < this.bodies.length; i++) {
             this.bodies[i].update();
         }
 
-        if ((this.bodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1] !== this.heroWithFlag)) {
+        if ((this.goodBodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1] !== this.heroWithFlag)) {
             this.addBody(this.heroWithFlag)
         }
     }
@@ -95,6 +106,10 @@ class Game {
 
         for (let body of this.bodies) {
             body.draw(this.screen)
+        }
+
+        for (let goodBody of this.goodBodies) {
+            goodBody.draw(this.screen)
         }
     }
 }
