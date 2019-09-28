@@ -27,16 +27,6 @@ class Game {
             y: Math.floor(this.size.height * .5) - (flagSize.height / 2)
         }
 
-        let heroWithFlagSize = {
-            width: 40,
-            height: 40
-        }
-
-        let heroWithFlagLocation = {
-            x: Math.floor(this.size.width - (heroWithFlagSize.width * 1.75)),
-            y: Math.floor(this.size.height * .5) - (heroWithFlagSize.height / 2)
-        }
-
         let monsterSize = {
             width: 20,
             height: 20
@@ -45,6 +35,16 @@ class Game {
         let monsterLocation = {
             x: Math.floor(this.size.width * .5) - (heroSize.width / 2),
             y: Math.floor(this.size.height * .5) - (heroSize.height / 2)
+        }
+
+        let heroWithFlagSize = {
+            width: 40,
+            height: 40
+        }
+
+        let heroWithFlagLocation = {
+            x: Math.floor(this.size.width - (heroWithFlagSize.width * 1.75)),
+            y: Math.floor(this.size.height * .5) - (heroWithFlagSize.height / 2)
         }
 
         this.hero = new Hero(heroLocation, heroSize)
@@ -74,17 +74,17 @@ class Game {
     }
 
     update() {
-        let heroIsAlive = (b1) => {
-            return this.bodies.filter(function (b2) { return monstersWin(b1, b2) }).length === 0
+        let heroHasNoFlag = (hero) => {
+            return this.bodies.filter(function (flag) { return flagGrab(hero, flag) }).length === 0
         }
 
-        this.bodies = this.bodies.filter(heroIsAlive)
+        this.bodies = this.bodies.filter(heroHasNoFlag)
 
         for (var i = 0; i < this.bodies.length; i++) {
             this.bodies[i].update();
-          }
+        }
 
-        if ((this.bodies[0] !== this.hero) && (this.bodies[this.bodies.length-1] !== this.heroWithFlag)) {
+        if ((this.bodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1] !== this.heroWithFlag)) {
             this.addBody(this.heroWithFlag)
         }
     }
@@ -164,8 +164,10 @@ class HeroWithFlag {
     }
 
     draw(screen) {
-        screen.fillStyle = "#000000"
+        screen.fillStyle = "#EEE11A"
         screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+        screen.fillStyle = "#8CD1EF"
+        screen.fillRect(this.location.x + (this.size.width / 2), this.location.y, this.size.width / 2, this.size.height / 2)
     }
 }
 
@@ -213,25 +215,25 @@ class Keyboarder {
 
 Keyboarder.KEYS = { LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, S: 83 }
 
-function flagGrab(b1, b2) {
+function flagGrab(hero, flag) {
     return !(
-        b1 === b2 ||
-        b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
-        b1.location.y + b1.size.height / 2 < b2.location.y - b2.size.height / 2 ||
-        b1.location.x - b1.size.width / 2 > b2.location.x + b2.size.width / 2 ||
-        b1.location.y - b1.size.height / 2 > b2.location.y + b2.size.height / 2
+        hero === flag ||
+        hero.location.x + hero.size.width / 2 < flag.location.x - flag.size.width / 2 ||
+        hero.location.y + hero.size.height / 2 < flag.location.y - flag.size.height / 2 ||
+        hero.location.x - hero.size.width / 2 > flag.location.x + flag.size.width / 2 ||
+        hero.location.y - hero.size.height / 2 > flag.location.y + flag.size.height / 2
     )
 }
 
-function monstersWin(b1, b2) {
-    return !(
-        b1 === b2 ||
-        b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
-        b1.location.y + b1.size.height / 2 < b2.location.y - b2.size.height / 2 ||
-        b1.location.x - b1.size.width / 2 > b2.location.x + b2.size.width / 2 ||
-        b1.location.y - b1.size.height / 2 > b2.location.y + b2.size.height / 2
-    )
-}
+// function monstersWin(b1, b2) {
+//     return !(
+//         b1 === b2 ||
+//         b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
+//         b1.location.y + b1.size.height / 2 < b2.location.y - b2.size.height / 2 ||
+//         b1.location.x - b1.size.width / 2 > b2.location.x + b2.size.width / 2 ||
+//         b1.location.y - b1.size.height / 2 > b2.location.y + b2.size.height / 2
+//     )
+// }
 
 const game = new Game("capture-the-flag")
 game.run()
