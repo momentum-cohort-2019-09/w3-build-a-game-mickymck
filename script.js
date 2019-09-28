@@ -97,6 +97,7 @@ class Game {
 
         if ((this.goodBodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1] !== this.heroWithFlag)) {
             this.addBody(this.heroWithFlag)
+            this.bodies.splice(0,1)
         }
     }
 
@@ -165,16 +166,16 @@ class HeroWithFlag {
 
     update() {
         if (game.keyboard.isDown(Keyboarder.KEYS.LEFT)) {
-            this.location.x -= 2
+            this.location.x -= 4
         }
         if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT)) {
-            this.location.x += 2
+            this.location.x += 4
         }
         if (game.keyboard.isDown(Keyboarder.KEYS.UP)) {
-            this.location.y -= 2
+            this.location.y -= 4
         }
         if (game.keyboard.isDown(Keyboarder.KEYS.DOWN)) {
-            this.location.y += 2
+            this.location.y += 4
         }
     }
 
@@ -193,7 +194,7 @@ class Monster {
     }
 
     update() {
-        this.location.x -= .5
+        this.location.x -= 1
     }
 
     draw(screen) {
