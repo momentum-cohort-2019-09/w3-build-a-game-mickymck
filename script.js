@@ -94,6 +94,22 @@ class Game {
     }
 
     update() {
+        let notEaten = (hero) => {
+            return this.bodies.filter(function (b2) { return monstersWin(hero, b2) }).length === 0
+        }
+
+        this.bodies = this.bodies.filter(notEaten)
+
+        if ((this.bodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1]) !== this.heroWithFlag) {
+            this.goodBodies.splice(0, 1)
+            this.bodies.splice((this.bodies.length-1), 1)
+        }
+
+        if ((this.goodBodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1] !== this.heroWithFlag)) {
+            this.addBody(this.heroWithFlag)
+            this.bodies.splice(0, 1)
+        }
+        
         let heroHasNoFlag = (hero) => {
             return this.goodBodies.filter(function (flag) { return flagGrab(hero, flag) }).length === 0
         }
@@ -104,24 +120,8 @@ class Game {
             this.goodBodies[i].update();
         }
 
-        let notEaten = (hero) => {
-            return this.bodies.filter(function (b2) { return monstersWin(hero, b2) }).length === 0
-        }
-
-        this.bodies = this.bodies.filter(notEaten)
-
-        // 
-        if (this.bodies[0] !== this.hero) {
-            this.goodBodies.splice(0, 1)
-        }
-
         for (var i = 0; i < this.bodies.length; i++) {
             this.bodies[i].update();
-        }
-
-        if ((this.goodBodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1] !== this.heroWithFlag)) {
-            this.addBody(this.heroWithFlag)
-            this.bodies.splice(0, 1)
         }
     }
 
