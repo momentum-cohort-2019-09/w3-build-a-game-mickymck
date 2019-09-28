@@ -91,6 +91,16 @@ class Game {
             this.goodBodies[i].update();
         }
 
+        let notEaten = (b1) => {
+            return this.bodies.filter(function (b2) { return monstersWin(b1, b2) }).length === 0
+          }
+          
+        this.bodies = this.bodies.filter(notEaten)
+
+        if (this.bodies[0] !== this.hero) {
+            this.goodBodies.splice(0, 1)
+        }
+
         for (var i = 0; i < this.bodies.length; i++) {
             this.bodies[i].update();
         }
@@ -241,15 +251,15 @@ function flagGrab(hero, flag) {
     )
 }
 
-// function monstersWin(b1, b2) {
-//     return !(
-//         b1 === b2 ||
-//         b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
-//         b1.location.y + b1.size.height / 2 < b2.location.y - b2.size.height / 2 ||
-//         b1.location.x - b1.size.width / 2 > b2.location.x + b2.size.width / 2 ||
-//         b1.location.y - b1.size.height / 2 > b2.location.y + b2.size.height / 2
-//     )
-// }
+function monstersWin(b1, b2) {
+    return !(
+        b1 === b2 ||
+        b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
+        b1.location.y + b1.size.height / 2 < b2.location.y - b2.size.height / 2 ||
+        b1.location.x - b1.size.width / 2 > b2.location.x + b2.size.width / 2 ||
+        b1.location.y - b1.size.height / 2 > b2.location.y + b2.size.height / 2
+    )
+}
 
 const game = new Game("capture-the-flag")
 game.run()
