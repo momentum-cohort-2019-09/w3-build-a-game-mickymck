@@ -132,16 +132,16 @@ class Hero {
     }
 
     update() {
-        if (game.keyboard.isDown(Keyboarder.KEYS.LEFT)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.LEFT) && (this.location.x >= 5)) {
             this.location.x -= 2
         }
-        if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT) && (this.location.x <= 975)) {
             this.location.x += 2
         }
-        if (game.keyboard.isDown(Keyboarder.KEYS.UP)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.UP) && (this.location.y >= 5)) {
             this.location.y -= 2
         }
-        if (game.keyboard.isDown(Keyboarder.KEYS.DOWN)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.DOWN) && (this.location.y <= 475)) {
             this.location.y += 2
         }
     }
@@ -204,11 +204,13 @@ class Monster {
     }
 
     update() {
-        this.location.x -= 1
+        if (this.location.x >= 5) {
+            this.location.x -= 2
+        }
     }
 
     draw(screen) {
-        screen.fillStyle = "#146515"
+        screen.fillStyle = "#CC0303"
         screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
     }
 }
