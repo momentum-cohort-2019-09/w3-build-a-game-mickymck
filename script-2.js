@@ -284,13 +284,13 @@ Keyboarder.KEYS = { LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, S: 83 }
 //     )
 // }
 
-function monstersWin(player, monster) {
+function collision(b1, b2) {
     return !(
-        player === monster ||
-        player.location.x + player.size.width / 2 < monster.location.x - monster.size.width / 2 ||
-        player.location.y + player.size.height / 2 < monster.location.y - monster.size.height / 2 ||
-        player.location.x - player.size.width / 2 > monster.location.x + monster.size.width / 2 ||
-        player.location.y - player.size.height / 2 > monster.location.y + monster.size.height / 2
+        b1 === b2 ||
+        b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
+        b1.location.y + b1.size.height / 2 < b2.location.y - b2.size.height / 2 ||
+        b1.location.x - b1.size.width / 2 > b2.location.x + b2.size.width / 2 ||
+        b1.location.y - b1.size.height / 2 > b2.location.y + b2.size.height / 2
     )
 }
 
