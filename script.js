@@ -197,23 +197,26 @@ class Hero {
     }
 
     update() {
-        if (game.keyboard.isDown(Keyboarder.KEYS.LEFT) && (this.location.x >= 5)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.LEFT) && (this.location.x >= 15)) {
             this.location.x -= 2
         }
-        if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT) && (this.location.x <= 975)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT) && (this.location.x <= 985)) {
             this.location.x += 2
         }
-        if (game.keyboard.isDown(Keyboarder.KEYS.UP) && (this.location.y >= 5)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.UP) && (this.location.y >= 15)) {
             this.location.y -= 2
         }
-        if (game.keyboard.isDown(Keyboarder.KEYS.DOWN) && (this.location.y <= 475)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.DOWN) && (this.location.y <= 485)) {
             this.location.y += 2
         }
     }
 
     draw(screen) {
         screen.fillStyle = "#EEE11A"
-        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+        screen.fillRect(
+            this.location.x - (this.size.width/2),
+            this.location.y - (this.size.height/2),
+            this.size.width, this.size.height)
     }
 }
 
@@ -225,27 +228,36 @@ class SuperHero {
 
 
     update() {
-        if (game.keyboard.isDown(Keyboarder.KEYS.LEFT) && (this.location.x >= 5)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.LEFT) && (this.location.x >= 15)) {
             this.location.x -= 4
         }
-        if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT) && (this.location.x <= 975)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.RIGHT) && (this.location.x <= 985)) {
             this.location.x += 4
         }
-        if (game.keyboard.isDown(Keyboarder.KEYS.UP) && (this.location.y >= 5)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.UP) && (this.location.y >= 15)) {
             this.location.y -= 4
         }
-        if (game.keyboard.isDown(Keyboarder.KEYS.DOWN) && (this.location.y <= 475)) {
+        if (game.keyboard.isDown(Keyboarder.KEYS.DOWN) && (this.location.y <= 485)) {
             this.location.y += 4
         }
     }
 
     draw(screen) {
         screen.fillStyle = "#EEE11A"
-        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+        screen.fillRect(
+            this.location.x - (this.size.width/2),
+            this.location.y - (this.size.height/2),
+            this.size.width, this.size.height)
         screen.fillStyle = "#8CD1EF"
-        screen.fillRect(this.location.x + (this.size.width / 2), this.location.y, this.size.width / 2, this.size.height / 2)
+        screen.fillRect(
+            this.location.x,
+            this.location.y - (this.size.height/2),
+            this.size.width / 2, this.size.height / 2)
         screen.fillStyle = "#8CD1EF"
-        screen.fillRect(this.location.x, this.location.y + (this.size.height /2), this.size.width / 2, this.size.height / 2)
+        screen.fillRect(
+            this.location.x - (this.size.width/2),
+            this.location.y,
+            this.size.width / 2, this.size.height / 2)
     }
 }
 
@@ -261,7 +273,10 @@ class Flag {
 
     draw(screen) {
         screen.fillStyle = "#8CD1EF"
-        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+        screen.fillRect(
+            this.location.x - (this.size.width/2),
+            this.location.y - (this.size.height/2),
+            this.size.width, this.size.height)
     }
 }
 
@@ -277,7 +292,10 @@ class HomeBase {
 
     draw(screen) {
         screen.fillStyle = "#FF9FF9"
-        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+        screen.fillRect(
+            this.location.x - (this.size.width/2),
+            this.location.y - (this.size.height/2),
+            this.size.width, this.size.height)
     }
 }
 
@@ -288,14 +306,17 @@ class Demon {
     }
 
     update() {
-        if (this.location.x >= 5) {
+        if (this.location.x >= 15) {
             this.location.x -= 2
         }
     }
 
     draw(screen) {
         screen.fillStyle = "#CC0303"
-        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+        screen.fillRect(
+            this.location.x - (this.size.width/2),
+            this.location.y - (this.size.height/2),
+            this.size.width, this.size.height)
     }
 }
 
@@ -306,14 +327,17 @@ class Zombie {
     }
 
     update() {
-        if (this.location.x <= 975) {
+        if (this.location.x <= 985) {
             this.location.x += 2
         }
     }
 
     draw(screen) {
         screen.fillStyle = "#396804"
-        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+        screen.fillRect(
+            this.location.x - (this.size.width/2),
+            this.location.y - (this.size.height/2),
+            this.size.width, this.size.height)
     }
 }
 
