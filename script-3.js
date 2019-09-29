@@ -55,7 +55,7 @@ class Game {
             height: 2
         }
 
-        let ghostLocation = {
+        let firstGhostLocation = {
             x: this.randomX(1000),
             y: this.randomY(500)
         }
@@ -67,7 +67,7 @@ class Game {
         this.flag = new Flag(flagLocation, flagSize)
         this.addGoodBody(this.flag)
 
-        this.ghost = new Ghost(ghostLocation, ghostSize)
+        this.ghost = new Ghost(firstGhostLocation, ghostSize)
         this.addBody(this.ghost)
 
         this.superHero = new SuperHero(superHeroLocation, superHeroSize)
@@ -91,6 +91,22 @@ class Game {
         return Math.floor(Math.random() * Math.floor(max))
     }
 
+    addGhost () {
+        let ghostLocation = {
+            x: this.randomX(1000),
+            y: this.randomY(500)
+        }
+
+        let ghostSize = {
+            width: 2,
+            height: 2
+        }
+        
+        this.ghost = new Ghost(ghostLocation, ghostSize)
+
+        this.addBody(this.ghost)
+    }
+
     run() {
         const tick = () => {
             this.update()
@@ -105,12 +121,13 @@ class Game {
     }
 
     update() {
-        if (Math.random() < .01) {
-            this.addBody(this.ghost)
-        }
         
         for (let body of this.bodies) {
             body.update(this)
+
+            if (Math.random() < .005) {
+                this.addGhost()
+            }
 
             if (crash(this.hero, this.ghost)) {
                 this.gameOver = true
@@ -131,7 +148,7 @@ class Game {
             this.goodBodies = this.goodBodies.filter(heroHasNoFlag)
 
             // if hero grabs the flag, and after hero has been removed from goodBodies once, and a homebase has already been added to the goodBodies array
-            if ((crash(this.hero, this.flag)) &&
+            if ((flagGrab(this.hero, this.flag)) &&
                 (this.bodies[this.bodies.length - 1] !== this.superHero) && 
                 (this.goodBodies[0] !== this.homeBase)) {
                 
@@ -141,7 +158,7 @@ class Game {
             }
 
             // if he brings the flag home, he wins the game
-            if (crash(this.superHero, this.homeBase)) {
+            if (flagGrab(this.superHero, this.homeBase)) {
                 this.gameOver = true
             }
         }
