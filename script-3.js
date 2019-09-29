@@ -50,26 +50,6 @@ class Game {
             y: Math.floor(this.size.height * .5) - (flagSize.height / 2)
         }
 
-        // let demonSize = {
-        //     width: 20,
-        //     height: 20
-        // }
-
-        // let demonLocation = {
-        //     x: Math.floor(this.size.width * .9) - (heroSize.width / 2),
-        //     y: Math.floor(this.size.height * .4) - (heroSize.height / 2)
-        // }
-
-        // let zombieSize = {
-        //     width: 20,
-        //     height: 20
-        // }
-
-        // let zombieLocation = {
-        //     x: Math.floor(this.size.width * .1) - (heroSize.width / 2),
-        //     y: Math.floor(this.size.height * .1) - (heroSize.height / 2)
-        // }
-
         let ghostSize = {
             width: 2,
             height: 2
@@ -86,12 +66,6 @@ class Game {
 
         this.flag = new Flag(flagLocation, flagSize)
         this.addGoodBody(this.flag)
-
-        // this.demon = new Demon(demonLocation, demonSize)
-        // this.addBody(this.demon)
-
-        // this.zombie = new Zombie(zombieLocation, zombieSize)
-        // this.addBody(this.zombie)
 
         this.ghost = new Ghost(ghostLocation, ghostSize)
         this.addBody(this.ghost)
@@ -138,33 +112,13 @@ class Game {
         for (let body of this.bodies) {
             body.update(this)
 
-            // if a bad guy touches hero, he dead
-            // if (crash(this.hero, this.demon)) {
-            //     this.gameOver = true
-            // }
-
-            // if (crash(this.hero, this.zombie)) {
-            //     this.gameOver = true
-            // }
-
             if (crash(this.hero, this.ghost)) {
                 this.gameOver = true
             }
 
-            // if a bad guy touches superHero, he dead
-            // if (crash(this.superHero, this.demon)) {
-            //     this.gameOver = true
-            // }
-
-            // if (crash(this.superHero, this.zombie)) {
-            //     this.gameOver = true
-            // }
-
             if (crash(this.superHero, this.ghost)) {
                 this.gameOver = true
             }
-
-            console.log(this.hero.location)
         }
 
         for (let goodBody of this.goodBodies) {
@@ -177,9 +131,12 @@ class Game {
             this.goodBodies = this.goodBodies.filter(heroHasNoFlag)
 
             // if hero grabs the flag, and after hero has been removed from goodBodies once, and a homebase has already been added to the goodBodies array
-            if ((crash(this.hero, this.flag)) && (this.goodBodies[0] !== this.hero) && (this.bodies[this.bodies.length - 1] !== this.superHero)) {
-                this.addBody(this.superHero)
+            if ((crash(this.hero, this.flag)) &&
+                (this.bodies[this.bodies.length - 1] !== this.superHero) && 
+                (this.goodBodies[0] !== this.homeBase)) {
+                
                 this.bodies.splice(0, 1)
+                this.addBody(this.superHero)
                 this.addGoodBody(this.homeBase)
             }
 
@@ -312,48 +269,6 @@ class HomeBase {
             this.size.width, this.size.height)
     }
 }
-
-// class Demon {
-//     constructor(location, size) {
-//         this.location = location
-//         this.size = size
-//     }
-
-//     update() {
-//         if (this.location.x >= 15) {
-//             this.location.x -= 2
-//         }
-//     }
-
-//     draw(screen) {
-//         screen.fillStyle = "#CC0303"
-//         screen.fillRect(
-//             this.location.x - (this.size.width/2),
-//             this.location.y - (this.size.height/2),
-//             this.size.width, this.size.height)
-//     }
-// }
-
-// class Zombie {
-//     constructor(location, size) {
-//         this.location = location
-//         this.size = size
-//     }
-
-//     update() {
-//         if (this.location.x <= 985) {
-//             this.location.x += 2
-//         }
-//     }
-
-//     draw(screen) {
-//         screen.fillStyle = "#396804"
-//         screen.fillRect(
-//             this.location.x - (this.size.width/2),
-//             this.location.y - (this.size.height/2),
-//             this.size.width, this.size.height)
-//     }
-// }
 
 class Ghost {
     constructor(location, size) {
