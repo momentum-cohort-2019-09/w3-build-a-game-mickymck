@@ -71,13 +71,13 @@ class Game {
         }
 
         let ghostSize = {
-            width: 20,
-            height: 20
+            width: 2,
+            height: 2
         }
 
         let ghostLocation = {
-            x: Math.floor(this.size.width * .3) - (heroSize.width / 2),
-            y: Math.floor(this.size.height * .9) - (heroSize.height / 2)
+            x: 500,
+            y: 250
         }
 
         this.hero = new Hero(heroLocation, heroSize)
@@ -324,14 +324,20 @@ class Ghost {
     }
 
     update() {
-        if (this.location.x <= 975) {
-            this.location.x += 2
+        if (this.size.width < 40) {
+            this.size.width += 2
+        }
+        if (this.size.height < 40) {
+            this.size.height +=2
         }
     }
 
     draw(screen) {
         screen.fillStyle = "#ffffff"
-        screen.fillRect(this.location.x, this.location.y, this.size.width, this.size.height)
+        screen.fillRect(
+            this.location.x - (this.size.width/2),
+            this.location.y - (this.size.height/2),
+            this.size.width, this.size.height)
     }
 }
 
