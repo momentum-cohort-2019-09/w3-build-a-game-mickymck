@@ -330,6 +330,44 @@ class YouWin {
     draw(screen) {
         screen.fillStyle = "#EEE11A"
         screen.fillRect(0, 0, 1000, 500)
+        // w
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(160, 160, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(160, 200, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(200, 240, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(240, 280, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(240, 320, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(280, 240, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(320, 280, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(320, 320, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(360, 240, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(400, 200, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(400, 160, 40, 40)
+        // i
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(520, 160, 40, 200)
+        // n
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(640, 160, 40, 200)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(680, 200, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(720, 240, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(760, 280, 40, 40)
+        screen.fillStyle = "#FF9FF9"
+        screen.fillRect(800, 160, 40, 200)
+
     }
 }
 
