@@ -107,6 +107,11 @@ class Game {
         this.addBody(this.ghost)
     }
 
+    winTheGame () {
+        this.youWin = new YouWin(0, 0, 1000, 500)
+        this.addGoodBody(this.youWin)
+    }
+
     run() {
         const tick = () => {
             this.update()
@@ -125,15 +130,15 @@ class Game {
         for (let body of this.bodies) {
             body.update(this)
 
-            if (Math.random() < .005) {
+            if (Math.random() < .007) {
                 this.addGhost()
             }
 
-            if (crash(this.hero, this.ghost)) {
+            if (crash(this.hero, body)) {
                 this.gameOver = true
             }
 
-            if (crash(this.superHero, this.ghost)) {
+            if (crash(this.superHero, body)) {
                 this.gameOver = true
             }
         }
@@ -159,6 +164,7 @@ class Game {
 
             // if he brings the flag home, he wins the game
             if (flagGrab(this.superHero, this.homeBase)) {
+                this.winTheGame()
                 this.gameOver = true
             }
         }
@@ -295,10 +301,10 @@ class Ghost {
 
     update() {
         if (this.size.width < 40) {
-            this.size.width += .25
+            this.size.width += 2
         }
         if (this.size.height < 40) {
-            this.size.height += .25
+            this.size.height += 2
         }
     }
 
@@ -308,6 +314,22 @@ class Ghost {
             this.location.x - (this.size.width/2),
             this.location.y - (this.size.height/2),
             this.size.width, this.size.height)
+    }
+}
+
+class YouWin {
+    constructor (location, size) {
+        this.location = location
+        this.size = size
+    }
+
+    update() {
+
+    }
+
+    draw(screen) {
+        screen.fillStyle = "#EEE11A"
+        screen.fillRect(0, 0, 1000, 500)
     }
 }
 
@@ -349,13 +371,13 @@ function flagGrab(hero, flag) {
     )
 }
 
-function crash(hero, b2) {
+function crash(b1, b2) {
     return !(
-        hero === b2 ||
-        hero.location.x + hero.size.width / 2 < b2.location.x - b2.size.width / 2 ||
-        hero.location.y + hero.size.height / 2 < b2.location.y - b2.size.height / 2 ||
-        hero.location.x - hero.size.width / 2 > b2.location.x + b2.size.width / 2 ||
-        hero.location.y - hero.size.height / 2 > b2.location.y + b2.size.height / 2
+        b1 === b2 ||
+        b1.location.x + b1.size.width / 2 < b2.location.x - b2.size.width / 2 ||
+        b1.location.y + b1.size.height / 2 < b2.location.y - b2.size.height / 2 ||
+        b1.location.x - b1.size.width / 2 > b2.location.x + b2.size.width / 2 ||
+        b1.location.y - b1.size.height / 2 > b2.location.y + b2.size.height / 2
     )
 }
 
