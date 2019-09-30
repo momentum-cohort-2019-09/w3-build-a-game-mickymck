@@ -1,15 +1,11 @@
 .canvasDiv {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 h1 {
-    font-family: Apple chancery, sans-serif;
+    font-family: "Bookman Old Style", serif;
     color: #8CD1EF;
     text-align: center;
-    font-size:  48px;
+    font-size:  65px;
 }
-
-/* #capture-the-flag {
-    border: 5px solid black;
-} */

@@ -171,7 +171,7 @@ class Game {
     }
 
     draw() {
-        this.screen.fillStyle = "#423149"
+        this.screen.fillStyle = "#4D2F16"
         this.screen.fillRect(0, 0, 1000, 500)
 
         for (let body of this.bodies) {
